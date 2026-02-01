@@ -9,6 +9,9 @@ def digit(n, k):
     0
     """
     return int(str(n)[len(str(n)) - k - 1]) if k <= len(str(n)) else 0
+""" 第一步：通过整除，去掉目标位右边的所有数字
+    # 第二步：通过取余，只保留当前的最右一位
+    也就是通过把目标数字放在个位的方法来解决。好处是不用判断k超出n范围，会直接得到0，不用自己处理越界的情况 """
 
 
 def middle(a, b, c):
@@ -54,6 +57,14 @@ def falling(n, k):
         result = 1
     
     return result
+""" 可以有更加简洁的循环方式，直接从n开始递减
+ def falling(n, k):
+    total = 1
+    while k > 0:
+        total *= n
+        n -= 1
+        k -= 1
+    return total """
 
 def divisible_by_k(n, k):
     """
@@ -88,6 +99,14 @@ def divisible_by_k(n, k):
         pass
 
     return total 
+""" range(start, stop, step) 可以直接跳过不符合条件的数字，效率极高。 
+def divisible_by_k(n, k):
+    count = 0
+    # 从 k 开始，每次增加 k，直到不超过 n
+    for i in range(k, n + 1, k):
+        print(i)
+        count += 1
+    return count"""
 
 def sum_digits(y):
     """Sum all the digits of y.
@@ -108,7 +127,13 @@ def sum_digits(y):
         total +=  int(c)
 
     return total 
-
+""" 纯数学迭代：% 10（取最后一位）和 // 10（去掉最后一位）。
+def sum_digits(y):
+    total = 0
+    while y > 0:
+        total += y % 10
+        y //= 10
+    return total """
 
 def double_eights(n):
     """Return true if n has two eights in a row.
@@ -128,6 +153,8 @@ def double_eights(n):
     "*** YOUR CODE HERE ***"
         
     return False if str(n).find('88') == -1 else True 
-       
+""" def double_eights(n):
+    return '88' in str(n) 
+    可以用 while 循环判断 n % 100 == 88。"""
     
     
