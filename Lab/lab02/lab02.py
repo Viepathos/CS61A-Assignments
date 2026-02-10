@@ -14,6 +14,12 @@ def composite_identity(f, g):
     False
     """
     "*** YOUR CODE HERE ***"
+    def h(x):
+        if f(g(x)) == g(f(x)):
+            return True
+        else:
+            return False
+    return h
 
 
 def sum_digits(y):
@@ -60,6 +66,15 @@ def count_cond(condition):
     8
     """
     "*** YOUR CODE HERE ***"
+    def cond(n):
+        i = 1
+        total = 0
+        while i <= n:
+            if condition(n, i):
+                total += 1
+            i += 1
+        return total
+    return cond
 
 
 def multiple(a, b):
@@ -71,6 +86,13 @@ def multiple(a, b):
     42
     """
     "*** YOUR CODE HERE ***"
+    n = max(a, b)
+    while True:
+        if n % a == 0 and n % b == 0:
+            return n
+        n += 1
+    #其实这个要求是找最小公倍数，那么最简单的逻辑是从最大的那个数往上数数到能整除的
+
 
 
 
@@ -101,4 +123,41 @@ def cycle(f1, f2, f3):
     19
     """
     "*** YOUR CODE HERE ***"
+    """
+    
+    def g(n):
+        def h(x):
+            prior_result = g(n - 1)(x) #注意这里需要输入两个值，保证x是不变的
+            if n == 0:
+                return x
+            else:
+                if n % 3 == 1:
+                    return f1(prior_result)
+                elif n % 3 == 2:
+                    return f2(prior_result)
+                elif n % 3 == 0:
+                    return f3(prior_result)
+        return h
+    return g
+"""
+#我的逻辑错误在于施加了n次之后停不下来了，也就是当x减到0时也不会有任何变化。循环停不下来，也就是我的往前递归没有h（0）的样本，我只有n = 0的样本
+#我把n = 0和x = 0搞混淆了
+#解决方法在于n来递减而非是x
+#好吧递归法还是报错了，在h函数里面又调用了一次g导致函数重新定义
 
+
+#改用循环法
+    def g(n):
+        def h(x):
+            i = 1
+            while i <= n:
+                if i % 3 == 1:
+                    x = f1(x)
+                elif i % 3 == 2:
+                    x = f2(x)
+                else:
+                    x = f3(x)
+                i += 1
+            return x
+        return h
+    return g
