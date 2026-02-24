@@ -123,7 +123,7 @@ def cycle(f1, f2, f3):
     19
     """
     "*** YOUR CODE HERE ***"
-    """
+
     
     def g(n):
         def h(x):
@@ -131,22 +131,23 @@ def cycle(f1, f2, f3):
             if n == 0:
                 return x
             else:
-                if n % 3 == 1:
+                if i % 3 == 1:
                     return f1(prior_result)
-                elif n % 3 == 2:
+                elif i % 3 == 2:
                     return f2(prior_result)
-                elif n % 3 == 0:
+                elif i % 3 == 0:
                     return f3(prior_result)
         return h
     return g
-"""
+
 #我的逻辑错误在于施加了n次之后停不下来了，也就是当x减到0时也不会有任何变化。循环停不下来，也就是我的往前递归没有h（0）的样本，我只有n = 0的样本
 #我把n = 0和x = 0搞混淆了
 #解决方法在于n来递减而非是x
-#好吧递归法还是报错了，在h函数里面又调用了一次g导致函数重新定义
+#好吧递归法还是报错了,原因是我用的n去判断的，，，
 
 
 #改用循环法
+"""
     def g(n):
         def h(x):
             i = 1
@@ -161,3 +162,4 @@ def cycle(f1, f2, f3):
             return x
         return h
     return g
+"""

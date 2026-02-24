@@ -25,7 +25,14 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if n // 10 == 0 and n != 8:
+        return 0
+    elif n // 10 == 0 and n == 8:
+        return 1
+    elif n % 10 == 8:
+        return 1 + num_eights(n // 10)
+    else:
+        return num_eights(n // 10)        
 
 def digit_distance(n):
     """Determines the digit distance of n.
@@ -47,7 +54,12 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if n // 10 == 0:
+        return 0
+    else:
+        d = n % 10
+        n //= 10
+        return abs(d - n % 10) + digit_distance(n)
 
 def interleaved_sum(n, odd_func, even_func):
     """Compute the sum odd_func(1) + even_func(2) + odd_func(3) + ..., up
@@ -71,6 +83,14 @@ def interleaved_sum(n, odd_func, even_func):
     True
     """
     "*** YOUR CODE HERE ***"
+    def f(k, current_func, new_func):
+        if k > n:
+            return 0
+        else:
+            return current_func(k) + f(k + 1, new_func, current_func)
+    
+    return f(1, odd_func, even_func)
+            
 
 
 def next_smaller_dollar(bill):
@@ -107,7 +127,18 @@ def count_dollars(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(remaining, current_bill):
+        if remaining == 0:
+            return 1
+        if remaining < 0 or current_bill is None:
+            return 0
 
+        use_it = helper(remaining - current_bill, current_bill)
+        skip_it = helper(remaining, next_smaller_dollar(current_bill))
+
+        return use_it + skip_it
+    return helper(total, 100)
+    
 
 def next_larger_dollar(bill):
     """Returns the next larger bill in order."""
@@ -143,7 +174,16 @@ def count_dollars_upward(total):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    def helper(remaining, current_bill):
+        if remaining == 0:
+            return 1
+        elif remaining < 0 or current_bill == None:
+            return 0
+        else:
+            use_it = helper(remaining - current_bill, current_bill)
+            skip_it = helper(remaining, next_larger_dollar(current_bill))
+            return use_it + skip_it
+    return helper(total, 1)
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
