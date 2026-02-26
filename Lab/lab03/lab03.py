@@ -140,3 +140,61 @@ def make_onion(f, g):
 
 
 
+def make_func_repeater(f, x):
+    """
+    >>> increment_repeater = make_func_repeater(lambda x: x + 1, 1)
+    >>> increment_repeater(2) #same as f(f(x))
+    3
+    >>> increment_repeater(5)
+    6
+    """
+    def repeat(y):
+        if y == 1:
+            return f(x) 
+        else:
+            return f(repeat(y - 1))
+    return repeat
+
+def ten_pairs(n):
+    """Return the number of ten-pairs within positive integer n.
+
+    >>> ten_pairs(7823952) # 7+3, 8+2, and 8+2
+    3
+    >>> ten_pairs(55055)
+    6
+    >>> ten_pairs(9641469) # 9+1, 6+4, 6+4, 4+6, 1+9, 4+6 
+    6
+    >>> # ban iteration
+    >>> from construct_check import check
+    >>> check(SOURCE_FILE, 'ten_pairs', ['While', 'For'])
+    True
+    """
+    "*** YOUR CODE HERE ***"
+    n = int(n)
+    total = 0
+    for i in n:
+        for j in n:
+            if i + j == 10:
+                total += 1
+
+    return total // 2
+
+                    
+
+
+def count_digit(n, digit):
+    """Return how many times digit appears in n.
+
+    >>> count_digit(55055, 5) # digit 5 appears 4 times in 55055
+    4
+    >>> from construct_check import check
+    >>> # ban iteration
+    >>> check(SOURCE_FILE, 'count_digits', ['While', 'For'])
+    True
+    """
+    "*** YOUR CODE HERE ***"
+    count = 0
+    for i in n:
+        if i == digit:
+            count += 1
+    return count
