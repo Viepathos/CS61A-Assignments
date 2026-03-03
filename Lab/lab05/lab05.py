@@ -27,7 +27,18 @@ def insert_items(s, before, after):
     True
     """
     "*** YOUR CODE HERE ***"
+    a = []
+    for i in range(len(s)):
+        if s[i] == before:
+          a.append(i + 1)  
+    t = 0
+    for j in range(len(a)):
+        a[j] = a[j] + t
+        s.insert(a[j], after)
+        t += 1
+        
 
+    return s
 
 def group_by(s, fn):
     """Return a dictionary of lists that together contain the elements of s.
@@ -40,12 +51,12 @@ def group_by(s, fn):
     {9: [-3, 3], 4: [-2, 2], 1: [-1, 1], 0: [0]}
     """
     grouped = {}
-    for ____ in ____:
-        key = ____
+    for i in s:
+        key = fn(i)
         if key in grouped:
-            ____
+            grouped[key] = grouped[key] + [i]
         else:
-            grouped[key] = ____
+            grouped[key] = [i]
     return grouped
 
 
@@ -71,8 +82,13 @@ def count_occurrences(t, n, x):
     2
     """
     "*** YOUR CODE HERE ***"
+    total = 0
+    t_iter = iter(t)
+    for i in range(n):
+        if next(t_iter) == x:
+            total += 1
 
-
+    return total
 def repeated(t, k):
     """Return the first value in iterator t that appears k times in a row,
     calling next on t as few times as possible.
@@ -94,8 +110,19 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
+    last_item = next(t)
+    total = 1
 
+    while True:
+        current_item = next(t)
+        if current_item == last_item:
+            total += 1
+        else:
+            last_item = current_item
+            total = 1
 
+        if total == k:
+            return last_item
 def sprout_leaves(t, leaves):
     """Sprout new leaves containing the labels in leaves at each leaf of
     the original tree t and return the resulting tree.
@@ -130,7 +157,14 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return tree(label(t), [tree(l) for l in leaves])
+    
 
+    else:
+        new_branchs = [sprout_leaves(b, leaves) for b in branches(t)]
+    return tree(label(t), new_branchs)
+    
 
 def partial_reverse(s, start):
     """Reverse part of a list in-place, starting with start up to the end of
@@ -145,8 +179,16 @@ def partial_reverse(s, start):
     [1, 2, 7, 6, 5, 3, 4]
     """
     "*** YOUR CODE HERE ***"
+    i = start
+    j = len(s) - 1
+    while i < j:
+        s[i], s[j] = s[j], s[i]
+        i += 1
+        j -= 1
+        
+    
 
-
+        
 
 # Tree Data Abstraction
 
