@@ -110,19 +110,19 @@ def repeated(t, k):
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
-    last_item = next(t)
+    last_value = next(t)
     total = 1
 
     while True:
-        current_item = next(t)
-        if current_item == last_item:
+        current_value = next(t) 
+        if last_value == current_value:
             total += 1
         else:
-            last_item = current_item
+            last_value = current_value
             total = 1
-
         if total == k:
-            return last_item
+            return current_value
+
 def sprout_leaves(t, leaves):
     """Sprout new leaves containing the labels in leaves at each leaf of
     the original tree t and return the resulting tree.
@@ -157,13 +157,13 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
+    
     if is_leaf(t):
         return tree(label(t), [tree(l) for l in leaves])
     
+    new_branches = [sprout_leaves(b, leaves) for b in branches(t)]
 
-    else:
-        new_branchs = [sprout_leaves(b, leaves) for b in branches(t)]
-    return tree(label(t), new_branchs)
+    return tree(label(t), new_branches)
     
 
 def partial_reverse(s, start):
@@ -179,12 +179,7 @@ def partial_reverse(s, start):
     [1, 2, 7, 6, 5, 3, 4]
     """
     "*** YOUR CODE HERE ***"
-    i = start
-    j = len(s) - 1
-    while i < j:
-        s[i], s[j] = s[j], s[i]
-        i += 1
-        j -= 1
+    
         
     
 
