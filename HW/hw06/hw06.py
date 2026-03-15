@@ -50,6 +50,10 @@ class VendingMachine:
     def __init__(self, product, price):
         """Set the product and its price, as well as other instance attributes."""
         "*** YOUR CODE HERE ***"
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0
 
     def restock(self, n):
         """Add n to the stock and return a message about the updated stock level.
@@ -57,6 +61,8 @@ class VendingMachine:
         E.g., Current candy stock: 3
         """
         "*** YOUR CODE HERE ***"
+        self.stock += n
+        return f'Current {self.product} stock: {self.stock}'
 
     def add_funds(self, n):
         """If the machine is out of stock, return a message informing the user to restock
@@ -69,7 +75,12 @@ class VendingMachine:
         E.g., Current balance: $4
         """
         "*** YOUR CODE HERE ***"
-
+        if self.stock == 0:
+            return f'Nothing left to vend. Please restock. Here is your ${n}.'
+        else:
+            self.balance += n
+            return f'Current balance: ${self.balance}'
+        
     def vend(self):
         """Dispense the product if there is sufficient stock and funds and
         return a message. Update the stock and balance accordingly.
@@ -82,6 +93,21 @@ class VendingMachine:
               Please add $3 more funds.
         """
         "*** YOUR CODE HERE ***"
+        if self.stock == 0 and self.balance == 0:
+            return f'Nothing left to vend. Please restock.'
+        elif self.stock == 0:
+            return f'Nothing left to vend. Please restock. Here is your ${self.balance}.'
+        else:
+            if self.balance < self.price:
+                return f'Please add ${self.price - self.balance} more funds.'
+            else:
+                change = self.balance - self.price
+                self.balance = 0
+                self.stock -= 1
+                if change == 0:
+                    return f'Here is your {self.product}.'
+                else:
+                    return f'Here is your {self.product} and ${change} change.'
 
 
 def store_digits(n):
@@ -104,7 +130,21 @@ def store_digits(n):
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
     "*** YOUR CODE HERE ***"
-
+    if n // 10 == 0:
+        return Link(n)
+    
+    front_part = store_digits(n // 10)
+    
+    def add_to_tail(s, val):
+        if s.rest is Link.empty:
+           s.rest = Link(val)
+        else:
+            add_to_tail(s.rest, val)
+        
+    add_to_tail(front_part, n % 10)
+        
+    return front_part
+        
 
 def deep_map_mut(func, s):
     """Mutates a deep link s by replacing each item found with the
@@ -126,7 +166,14 @@ def deep_map_mut(func, s):
     <9 <16> 25 36>
     """
     "*** YOUR CODE HERE ***"
+    if isinstance(s.first, int):
+        s.first = func(s.first)
+    if isinstance(s.first, Link):
+        deep_map_mut(func, s.first)
+    if isinstance(s.rest, Link):
+        deep_map_mut(func, s.rest)
 
+    return s
 
 def two_list(vals, counts):
     """
@@ -147,8 +194,16 @@ def two_list(vals, counts):
     Link(1, Link(1, Link(3, Link(3, Link(2)))))
     """
     "*** YOUR CODE HERE ***"
-
-
+    if not vals:
+        return Link.empty
+    else:
+        #如果还有，就继续递归
+        if counts[0] > 1:
+            counts[0] -= 1
+            return Link(vals[0], two_list(vals, counts))
+        #没有了，立即换下一个数去递归，让递归处理缩短的列表
+        else:
+            return Link(vals[0], two_list(vals[1:], counts[1:]))
 class Link:
     """A linked list.
 
